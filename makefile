@@ -14,8 +14,8 @@ build: libsample.a main.o
 libsample.a: sample.o
 	$(ARCHIVE) rcs $(LIB)/libsample.a $(OBJ)/sample.o
 
-sample.o: 
-	$(CC) -o $(OBJ)/$@ -c $(SRC)/sample.c 
+sample.o: $(SRC)/sample.c
+	$(CC) -o $(OBJ)/$@ -c $^ 
 
-main.o: 
+main.o: $(INC)/libsample.h
 	$(CC) -o $(OBJ)/main.o -c main.c $(CFLAGS)
