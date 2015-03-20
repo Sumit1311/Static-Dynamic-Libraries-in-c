@@ -8,14 +8,24 @@ INC=./include
 BIN=./bin
 OBJ=./obj
 
-build: libsample.a main.o
-	$(CC) -o main.out $(OBJ)/main.o -L./lib -lsample
+all: $(BIN)/main.out
 
-libsample.a: sample.o
-	$(ARCHIVE) rcs $(LIB)/libsample.a $(OBJ)/sample.o
+$(BIN)/main.out: $(LIB)/libsample.a $(OBJ)/main.o $(LIB)/libsampledynamic.so
+	$(CC) -o $@ $(OBJ)/main.o -L./lib -lsample -lsampledynamic
 
-sample.o: $(SRC)/sample.c
-	$(CC) -o $(OBJ)/$@ -c $^ 
+$(LIB)/libsample.a: $(OBJ)/sample.o
+	$(ARCHIVE) rcs $@ $(OBJ)/sample.o
 
-main.o: $(INC)/libsample.h
-	$(CC) -o $(OBJ)/main.o -c main.c $(CFLAGS)
+$(OBJ)/sample.o: $(SRC)/sample.c
+	$(CC) -o $@ -c $<
+
+$(OBJ)/main.o: $(INC)/libsample.h main.c
+	$(CC) -o $@ -c main.c $(CFLAGS)
+
+$(LIB)/libsampledynamic.so: $(SRC)/sampleDynamic.c
+	gcc -c -fpic $< -o $(OBJ)/libsampledynamic.o
+	gcc -shared -o $@ $(OBJ)/libsampledynamic.o
+
+clean: 
+	rm -rf ./obj/*.o
+	rm -rf ./bin/*
