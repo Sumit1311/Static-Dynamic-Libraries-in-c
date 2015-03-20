@@ -11,7 +11,7 @@ OBJ=./obj
 all: $(BIN)/main.out
 
 $(BIN)/main.out: $(LIB)/libsample.a $(OBJ)/main.o $(LIB)/libsampledynamic.so
-	$(CC) -o $@ $(OBJ)/main.o -L./lib -lsample -lsampledynamic
+	$(CC) -o $@ $(OBJ)/main.o -L./lib -lsample -lsampledynamic -Wl,-rpath=./lib
 
 $(LIB)/libsample.a: $(OBJ)/sample.o
 	$(ARCHIVE) rcs $@ $(OBJ)/sample.o
