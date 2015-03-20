@@ -18,4 +18,4 @@ sample.o:
 	$(CC) -o $(OBJ)/$@ -c $(SRC)/sample.c 
 
 main.o: 
-	$(CC) -o main.o main.c $(CFLAGS)
+	$(CC) -o $(OBJ)/main.o main.c $(CFLAGS)
